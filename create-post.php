@@ -1,6 +1,11 @@
 <?php require_once('inc/header.php'); ?>
 <?php require_once('inc/navbar.php'); ?>
-<?php session_start(); ?>
+<?php require_once 'inc/connection.php'; ?>
+<?php 
+    if(!isset($_SESSION['user_id'])){
+        header('location:login.php');
+    }
+?>
 <div class="container-fluid pt-4">
     <div class="row">
         <div class="col-md-6 offset-md-3">
@@ -17,12 +22,12 @@
     
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="title" name="title" value="<?php if(isset($_SESSION['title'])) echo $_SESSION['title']; unset($_SESSION['title']); ?>"> 
+                    <input type="text" class="form-control" id="title" name="title" value="<?php if(isset($_SESSION['title'])) echo $_SESSION['title'];unset($_SESSION['title']);?>"> 
                 </div>
 
                 <div class="mb-3">
                     <label for="body" class="form-label">Body</label>
-                    <textarea class="form-control" id="body" name="body" rows="5"><?php if(isset($_SESSION['body'])) echo $_SESSION['body']; unset($_SESSION['body']); ?></textarea>
+                    <textarea class="form-control" id="body" name="body" rows="5"><?php if(isset($_SESSION['body'])) echo $_SESSION['body'];unset($_SESSION['body']);?></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="body" class="form-label">image</label>

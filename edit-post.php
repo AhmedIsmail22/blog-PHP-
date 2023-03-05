@@ -1,21 +1,21 @@
 <?php require_once('inc/header.php'); ?>
 <?php require_once('inc/navbar.php'); ?>
 <?php require_once 'inc/connection.php'; ?>
-<?php
+<?php 
+    if(!isset($_SESSION['user_id'])){
+        header('location:login.php');
+    }
 
-    if(isset($_GET['id']) && !empty($_GET['id'])){
+    if(isset($_GET['id'])){
         $id = $_GET['id'];
-        $query = "select title,image,body from posts where id=$id";
-    $runQuery = mysqli_query($conn,$query);
-    
-    if(mysqli_num_rows($runQuery) > 0){
-        $posts = mysqli_fetch_all($runQuery,MYSQLI_ASSOC);
-    }else {
-        $msg = "posts not founded";
-    }
-    }
-    else {
-        header('location: index.php');
+        $query = "select * from posts where id='$id'";
+        $runQuery = mysqli_query($conn,$query);
+        if(mysqli_num_rows($runQuery) == 1){
+            $post = mysqli_fetch_assoc($runQuery);
+        }else {
+            $_SESSION['error'] = ["this post not found"];
+            header('location:index.php');
+        }
     }
 ?>
 <div class="container-fluid pt-4">
@@ -29,14 +29,7 @@
                     <a href="index.php" class="text-decoration-none">Back</a>
                 </div>
             </div>
-            <?php
-                if(! empty($posts)){
-                    foreach($posts as $post){
-                        ?>
-                        <?php require_once 'inc/errors.php'; ?>
-                            <form method="POST" action="handle/update-post.php" enctype="multipart/form-data">
-                                <input type="hidden" name="id" value="<?php echo $id; ?>">
-                                <input type="hidden" name="old_image" value="<?php echo $post['image']; ?>">
+                            <form method="POST" action="handle/update-post.php?id=<?php echo $post['id']; ?>" enctype="multipart/form-data">
     
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Title</label>
@@ -45,20 +38,16 @@
 
                                 <div class="mb-3">
                                     <label for="body" class="form-label">Body</label>
-                                    <textarea class="form-control" id="body" name="body" rows="5"><?php echo $post['body']; ?></textarea>
+                                    <textarea class="form-control" id="body" name="body" rows="5"><?php echo $post['body']; ?>"</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="body" class="form-label">image</label>
                                     <input type="file" class="form-control-file" id="image" name="image" >
                                 </div>
+                                <img src="uploads/<?php echo $post['image']; ?>" alt="image" width="150px" >
+                                <!-- <a href="#" class="btn btn-danger">delete image</a> -->
                                 <button type="submit" class="btn btn-primary" name="submit">Submit</button>
                             </form>
-                        <?php
-                    }
-                }else {
-                    echo $msg;
-                }
-            ?>
         </div>
     </div>
 </div>

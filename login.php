@@ -1,6 +1,6 @@
 <?php require_once('inc/header.php'); ?>
 <?php require_once('inc/navbar.php'); ?>
-
+<?php session_start() ?>
 <div class="container-fluid pt-4">
     <div class="row">
         <div class="col-md-6 offset-md-3">
@@ -12,16 +12,17 @@
                     <a href="index.php" class="text-decoration-none">Back</a>
                 </div>
             </div>
+            <?php require_once 'inc/errors.php'; ?>
             <form method="POST" action="handle/handle-login.php">
     
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="text" class="form-control" id="email" name="email">
+                    <input type="text" class="form-control" id="email" name="email" value="<?php if(isset($_SESSION['email']))echo $_SESSION['email']; unset($_SESSION['email']); ?>" >
                 </div>
     
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control" id="password" name="password" value="<?php if(isset($_SESSION['password']))echo $_SESSION['password']; unset($_SESSION['password']); ?>">
                 </div>
                 
                 <button type="submit" class="btn btn-primary" name="submit">Login</button>
