@@ -3,6 +3,8 @@
 <?php require_once('inc/connection.php'); ?>
 
 <?php 
+
+    $lang = $_SESSION['lang'];
     if(!isset($_SESSION['user_id'])){
         header('location:login.php');
     }
@@ -28,7 +30,7 @@
                     <h3><?php echo $post['title']; ?></h3>
                 </div>
                 <div>
-                    <a href="index.php" class="text-decoration-none">Back</a>
+                    <a href="index.php" class="text-decoration-none"><?php echo $lang['back']; ?></a>
                 </div>
             </div>
             <div>
